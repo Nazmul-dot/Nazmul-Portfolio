@@ -13,7 +13,7 @@ const educationItems: EducationItem[] = [
   {
     degree: 'B.Sc. in Computer Science and Engineering',
     institution: 'Mawlana Bhashani Science and Technology University',
-    period: 'Jan 2019 - Dec 2023'
+    period: 'Jan 2019 - Jul 2024'
   }
 ];
 
