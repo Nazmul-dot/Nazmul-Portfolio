@@ -50,8 +50,8 @@ const Contact = () => {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">
                 <Mail className="text-primary" size={18} />
-                <a href="mailto:nazmulhaq00545@gmail.com" className="hover:text-primary">
-                  nazmulhaq00545@gmail.com
+                <a href="mailto:nazmulhaq606845@gmail.com" className="hover:text-primary">
+                  nazmulhaq606845@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-3">

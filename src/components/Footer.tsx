@@ -19,7 +19,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            Designed and Developed By(NZ)
+            Designed and Developed By (NS)
           </p>
         </div>
       </div>
