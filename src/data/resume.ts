@@ -16,7 +16,7 @@ export const profile = {
 
 export const highlights = [
   { value: "1.5+", label: "Years experience" },
-  { value: "5", label: "Production domains" },
+  { value: "10+", label: "Products worked on" },
   { value: "1100+", label: "OJ problems solved" },
   { value: "Java + React", label: "Primary stack" },
 ];

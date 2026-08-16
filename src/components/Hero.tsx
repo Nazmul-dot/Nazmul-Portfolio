@@ -132,8 +132,9 @@ const TypingText: React.FC = () => {
 
 /* ── Counter Animation ── */
 const CountUp: React.FC<{ value: string }> = ({ value }) => {
-  const num = parseInt(value);
+  const num = parseFloat(value);
   const isNumeric = !isNaN(num);
+  const hasDecimal = value.includes(".");
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const triggered = useRef(false);
@@ -152,7 +153,7 @@ const CountUp: React.FC<{ value: string }> = ({ value }) => {
           const animate = (now: number) => {
             const progress = Math.min((now - start) / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * num));
+            setCount(hasDecimal ? Number((eased * num).toFixed(1)) : Math.floor(eased * num));
             if (progress < 1) requestAnimationFrame(animate);
           };
           requestAnimationFrame(animate);
@@ -163,11 +164,11 @@ const CountUp: React.FC<{ value: string }> = ({ value }) => {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [isNumeric, num]);
+  }, [hasDecimal, isNumeric, num]);
 
   if (!isNumeric) return <span>{value}</span>;
 
-  const suffix = value.replace(/[0-9]/g, "");
+  const suffix = value.replace(/[0-9.]/g, "");
   return (
     <span ref={ref}>
       {count}
@@ -285,7 +286,7 @@ const Hero = () => {
           <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             {highlights.map((item) => (
               <div key={item.label} className="glass-card p-4 text-center group hover:border-cyan-500/20 transition-all duration-500">
-                <p className="text-xl font-bold gradient-text">
+                <p className="whitespace-nowrap text-xl font-bold gradient-text">
                   <CountUp value={item.value} />
                 </p>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">{item.label}</p>
