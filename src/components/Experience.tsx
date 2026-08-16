@@ -1,64 +1,73 @@
-
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase } from 'lucide-react';
-
-interface ExperienceItem {
-  company: string;
-  location: string;
-  position: string;
-  period: string;
-  responsibilities: string[];
-}
-
-const experiences: ExperienceItem[] = [
-  {
-    company: 'Be Data Solutions',
-    location: 'Dhaka, Bangladesh',
-    position: 'Software Engineer (Intern)',
-    period: 'Feb 2025 - Apr 2025',
-    responsibilities: [
-      'Developed a community-Job Seeking website features using Spring Boot, React.js, REST API, and SQL. We utilize AWS S3 for storage and SES for email services, along with Auth0 for passwordless email authentication.',
-      'Developed a website for business management client safety using Spring Boot, React.js, REST API, and SQL. We utilize AWS S3 for storage and Gmail Api for email services, along with Auth0 for passwordless email authentication.'
-    ]
-  }
-];
+import React from "react";
+import { BriefcaseBusiness, CheckCircle2 } from "lucide-react";
+import { experiences } from "@/data/resume";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const Experience = () => {
+  const ref = useScrollReveal<HTMLDivElement>();
+
   return (
-    <section id="experience" className="py-16 bg-secondary/50">
+    <section id="experience" className="section-band">
       <div className="container mx-auto px-4">
-        <h2 className="section-title">Experience</h2>
-        
-        <div className="space-y-6">
-          {experiences.map((exp, index) => (
-            <Card key={index} className="overflow-hidden border-l-4 border-l-primary">
-              <CardHeader className="pb-2">
-                <div className="flex justify-between items-start flex-wrap gap-2">
-                  <div>
-                    <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
-                      <Briefcase className="h-5 w-5 text-primary" />
-                      {exp.position}
-                    </CardTitle>
-                    <p className="text-primary font-medium">{exp.company} | {exp.location}</p>
-                  </div>
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                    {exp.period}
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc pl-5 space-y-2">
-                  {exp.responsibilities.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+        <div ref={ref} className="reveal section-heading">
+          <p className="section-kicker">Experience</p>
+          <h2 className="section-title">Production work across health-tech, dashboards, and scalable services.</h2>
+        </div>
+
+        <div className="relative pl-12 md:pl-14 space-y-8">
+          <div className="timeline-line" />
+          {experiences.map((exp, idx) => (
+            <ExperienceCard key={`${exp.company}-${exp.period}`} exp={exp} idx={idx} />
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+const ExperienceCard: React.FC<{ exp: typeof experiences[0]; idx: number }> = ({ exp, idx }) => {
+  const cardRef = useScrollReveal<HTMLElement>();
+  return (
+    <article
+      ref={cardRef}
+      className="reveal relative glass-card-hover p-6 md:p-8"
+      style={{ transitionDelay: `${idx * 0.15}s` }}
+    >
+      <div className="timeline-dot" style={{ top: '32px' }} />
+
+      <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
+        <div>
+          <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl text-cyan-400"
+            style={{ background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.15)' }}
+          >
+            <BriefcaseBusiness className="h-5 w-5" />
+          </div>
+          <h3 className="text-2xl font-bold text-foreground">{exp.position}</h3>
+          <p className="mt-1 font-semibold gradient-text">{exp.company}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{exp.location}</p>
+          <p className="mt-4 inline-flex rounded-full px-3 py-1 text-sm font-medium"
+            style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.15)', color: '#67e8f9' }}
+          >
+            {exp.period}
+          </p>
+          <p className="mt-5 text-sm leading-6 text-muted-foreground">{exp.summary}</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {exp.stack.map((tech) => (
+              <span key={tech} className="stack-item">{tech}</span>
+            ))}
+          </div>
+        </div>
+
+        <ul className="space-y-3">
+          {exp.responsibilities.map((item) => (
+            <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground md:text-base">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-cyan-400" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
   );
 };
 

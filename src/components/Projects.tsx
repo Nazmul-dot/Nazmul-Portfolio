@@ -1,83 +1,72 @@
-
-import React from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Code, Github } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-
-interface Project {
-  title: string;
-  githubUrl: string;
-  period: string;
-  description: string;
-  technologies: string[];
-}
-
-const projects: Project[] = [
-  {
-    title: 'Save Your Contact',
-    githubUrl: 'https://github.com/Nazmul-dot/save-your-contact',
-    period: 'Jul 2024 - Oct 2024',
-    description: 'A Cloud contact base application to store personal contact.',
-    technologies: ['Spring Boot', 'React.js', 'SQL', 'Spring Security', 'JWT']
-  },
-  {
-    title: 'Prantik Bazar',
-    githubUrl: 'https://github.com/Nazmul-dot/prantik-bazar',
-    period: 'Nov 2023 - Apr 2024',
-    description: 'A E-Commerce application to buy products.',
-    technologies: ['Spring Boot', 'React.js', 'SQL', 'Spring Security', 'JWT']
-  },
-  {
-    title: 'U-Share',
-    githubUrl: 'https://github.com/Nazmul-dot/u-share',
-    period: 'Apr 2021 - Jun 2021',
-    description: 'A Moment sharing application to share special moment.',
-    technologies: ['Javascript', 'React.js', 'CSS', 'Bootstrap', 'Node.js', 'Express.js', 'MongoDB']
-  }
-];
+import React from "react";
+import { ExternalLink, Github, Layers3 } from "lucide-react";
+import { projects } from "@/data/resume";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const Projects = () => {
+  const headingRef = useScrollReveal<HTMLDivElement>();
+
   return (
-    <section id="projects" className="py-16">
+    <section id="projects" className="section-band">
       <div className="container mx-auto px-4">
-        <h2 className="section-title">Personal Projects</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <Card key={index} className="project-card flex flex-col h-full">
-              <CardHeader className="pb-2">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">
-                    <Code className="h-5 w-5 text-primary inline mr-2" />
-                    {project.title}
-                  </CardTitle>
-                </div>
-                <p className="text-sm text-muted-foreground">{project.period}</p>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <p className="mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, i) => (
-                    <Badge key={i} variant="secondary">{tech}</Badge>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <a 
-                  href={project.githubUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-primary hover:underline"
-                >
-                  <Github size={16} />
-                  <span>View on GitHub</span>
-                </a>
-              </CardFooter>
-            </Card>
+        <div ref={headingRef} className="reveal section-heading">
+          <p className="section-kicker">Selected Projects</p>
+          <h2 className="section-title">Full-stack applications with authentication, data modeling, and business workflows.</h2>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          {projects.map((project, idx) => (
+            <ProjectCard key={project.title} project={project} idx={idx} />
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+const ProjectCard: React.FC<{ project: typeof projects[0]; idx: number }> = ({ project, idx }) => {
+  const cardRef = useScrollReveal<HTMLElement>();
+  return (
+    <article
+      ref={cardRef}
+      className="reveal group relative glass-card-hover flex h-full flex-col p-6 glow-border"
+      style={{ transitionDelay: `${idx * 0.15}s` }}
+    >
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl text-cyan-400"
+          style={{ background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.15)' }}
+        >
+          <Layers3 className="h-6 w-6" />
+        </div>
+        <span className="rounded-full px-3 py-1 text-xs font-semibold"
+          style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)', color: '#c4b5fd' }}
+        >
+          {project.period}
+        </span>
+      </div>
+
+      <h3 className="text-2xl font-bold text-foreground group-hover:text-cyan-400 transition-colors duration-300">
+        {project.title}
+      </h3>
+      <p className="mt-3 flex-1 leading-7 text-muted-foreground">{project.description}</p>
+
+      <div className="mt-6 flex flex-wrap gap-2">
+        {project.technologies.map((tech) => (
+          <span key={tech} className="stack-item">{tech}</span>
+        ))}
+      </div>
+
+      <a
+        href={project.githubUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-outline-glow mt-7 w-fit inline-flex items-center gap-2 text-sm !py-2 !px-4"
+      >
+        <Github className="h-4 w-4" />
+        GitHub
+        <ExternalLink className="h-3.5 w-3.5" />
+      </a>
+    </article>
   );
 };
 

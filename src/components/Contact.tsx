@@ -1,148 +1,79 @@
+import React from "react";
+import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
+import { profile } from "@/data/resume";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+const contactLinks = [
+  { label: profile.email, href: `mailto:${profile.email}`, icon: Mail },
+  { label: profile.phone, href: `tel:${profile.phone}`, icon: Phone },
+  { label: "github.com/Nazmul-dot", href: profile.github, icon: Github },
+  { label: "linkedin.com/in/nazmul101", href: profile.linkedin, icon: Linkedin },
+];
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
-      });
-      setFormData({ name: '', email: '', message: '' });
-      setIsSubmitting(false);
-    }, 1000);
-  };
+  const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section id="contact" className="py-16">
+    <section id="contact" className="section-band">
       <div className="container mx-auto px-4">
-        <h2 className="section-title">Get In Touch</h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
-              <CardDescription>Feel free to reach out through any of these channels</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-3">
-                <Mail className="text-primary" size={18} />
-                <a href="mailto:nazmulhaq606845@gmail.com" className="hover:text-primary">
-                  nazmulhaq606845@gmail.com
+        <div
+          ref={ref}
+          className="reveal relative overflow-hidden rounded-2xl p-6 md:p-10"
+          style={{
+            background: 'linear-gradient(135deg, rgba(6,182,212,0.08), rgba(15,23,42,0.8) 45%, rgba(139,92,246,0.06))',
+            border: '1px solid rgba(148,163,184,0.08)',
+            backdropFilter: 'blur(16px)',
+          }}
+        >
+          {/* Background glow */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full opacity-20 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.4), transparent 70%)' }}
+          />
+          <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full opacity-20 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.3), transparent 70%)' }}
+          />
+
+          <div className="relative grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="section-kicker">Contact</p>
+              <h2 className="mt-3 text-3xl font-bold md:text-4xl text-foreground">Let's build something reliable and useful.</h2>
+              <p className="mt-4 max-w-xl leading-7 text-muted-foreground">
+                I'm interested in backend-heavy full-stack roles where I can work on APIs, dashboards, secure systems, and scalable product features.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href={`mailto:${profile.email}`} className="btn-gradient inline-flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Email Me
+                </a>
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" className="btn-outline-glow inline-flex items-center gap-2">
+                  <Github className="h-4 w-4" />
+                  GitHub
                 </a>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="text-primary" size={18} />
-                <a href="tel:+8801516064143" className="hover:text-primary">
-                  +880 1516064143
-                </a>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {contactLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="glass-card p-4 transition-all duration-300 hover:border-cyan-500/25 hover:shadow-[0_0_16px_rgba(6,182,212,0.08)]"
+                  >
+                    <Icon className="mb-3 h-5 w-5 text-cyan-400" />
+                    <span className="break-words text-sm font-medium text-foreground">{link.label}</span>
+                  </a>
+                );
+              })}
+              <div className="glass-card p-4 sm:col-span-2">
+                <MapPin className="mb-3 h-5 w-5 text-cyan-400" />
+                <span className="text-sm font-medium text-foreground">{profile.location}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="text-primary" size={18} />
-                <span>Naranyanganj, Bangladesh</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Github className="text-primary" size={18} />
-                <a 
-                  href="https://github.com/Nazmul-dot" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-primary"
-                >
-                  github.com/Nazmul-dot
-                </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Linkedin className="text-primary" size={18} />
-                <a 
-                  href="https://www.linkedin.com/in/nazmul101" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-primary"
-                >
-                  linkedin.com/in/nazmul101
-                </a>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Send a Message</CardTitle>
-              <CardDescription>Fill out the form below and I'll get back to you as soon as possible</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-1">
-                    Name
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder="Your name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-1">
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    placeholder="Your message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={5}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </section>
