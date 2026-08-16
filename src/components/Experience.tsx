@@ -1,60 +1,51 @@
-
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase } from 'lucide-react';
-
-interface ExperienceItem {
-  company: string;
-  location: string;
-  position: string;
-  period: string;
-  responsibilities: string[];
-}
-
-const experiences: ExperienceItem[] = [
-  {
-    company: 'Be Data Solutions',
-    location: 'Dhaka, Bangladesh',
-    position: 'Software Engineer (Intern)',
-    period: 'Feb 2025 - Apr 2025',
-    responsibilities: [
-      'Developed a community-Job Seeking website features using Spring Boot, React.js, REST API, and SQL. We utilize AWS S3 for storage and SES for email services, along with Auth0 for passwordless email authentication.',
-      'Developed a website for business management client safety using Spring Boot, React.js, REST API, and SQL. We utilize AWS S3 for storage and Gmail Api for email services, along with Auth0 for passwordless email authentication.'
-    ]
-  }
-];
+import React from "react";
+import { BriefcaseBusiness, CheckCircle2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { experiences } from "@/data/resume";
 
 const Experience = () => {
   return (
-    <section id="experience" className="py-16 bg-secondary/50">
+    <section id="experience" className="section-band">
       <div className="container mx-auto px-4">
-        <h2 className="section-title">Experience</h2>
-        
+        <div className="section-heading">
+          <p className="section-kicker">Experience</p>
+          <h2 className="section-title">Production work across health-tech, dashboards, and scalable services.</h2>
+        </div>
+
         <div className="space-y-6">
-          {experiences.map((exp, index) => (
-            <Card key={index} className="overflow-hidden border-l-4 border-l-primary">
-              <CardHeader className="pb-2">
-                <div className="flex justify-between items-start flex-wrap gap-2">
-                  <div>
-                    <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
-                      <Briefcase className="h-5 w-5 text-primary" />
-                      {exp.position}
-                    </CardTitle>
-                    <p className="text-primary font-medium">{exp.company} | {exp.location}</p>
+          {experiences.map((exp) => (
+            <article key={`${exp.company}-${exp.period}`} className="rounded-lg border bg-card p-5 shadow-sm md:p-6">
+              <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
+                <div>
+                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <BriefcaseBusiness className="h-5 w-5" />
                   </div>
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                  <h3 className="text-2xl font-bold">{exp.position}</h3>
+                  <p className="mt-1 font-semibold text-primary">{exp.company}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{exp.location}</p>
+                  <p className="mt-4 inline-flex rounded-full bg-secondary px-3 py-1 text-sm font-medium">
                     {exp.period}
-                  </span>
+                  </p>
+                  <p className="mt-5 text-sm leading-6 text-muted-foreground">{exp.summary}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {exp.stack.map((tech) => (
+                      <Badge key={tech} variant="secondary">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc pl-5 space-y-2">
-                  {exp.responsibilities.map((item, i) => (
-                    <li key={i}>{item}</li>
+
+                <ul className="space-y-3">
+                  {exp.responsibilities.map((item) => (
+                    <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground md:text-base">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-primary" />
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
+              </div>
+            </article>
           ))}
         </div>
       </div>
