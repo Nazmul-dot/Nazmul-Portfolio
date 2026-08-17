@@ -285,7 +285,7 @@ const Hero = () => {
           {/* Stat Cards */}
           <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             {highlights.map((item) => (
-              <div key={item.label} className="glass-card p-4 text-center group hover:border-cyan-500/20 transition-all duration-500">
+              <div key={item.label} className="glass-card p-3 text-center group hover:border-cyan-500/20 transition-all duration-500">
                 <p className="whitespace-nowrap text-xl font-bold gradient-text">
                   <CountUp value={item.value} />
                 </p>
